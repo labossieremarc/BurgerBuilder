@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment} from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary'
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+
 
 
 class Checkout extends Component {
+    
+
+    
 
     
     checkoutContinued = () => {
@@ -15,17 +19,26 @@ class Checkout extends Component {
         this.props.history.goBack();
     }
     render() {
+        let summary = <Redirect to='/'/>
         
-        
-        
+        if(this.props.ingredients){
+            const purchasedRedirect = this.props.purchased ? <Redirect to='/'/> : null;
+            summary = (
+                <Fragment>
+                    {purchasedRedirect}
+                    <CheckoutSummary 
+                        ingredients={this.props.ingredients}
+                        checkoutContinued={this.checkoutContinued}
+                        checkoutCancelled={this.checkoutCancelled}/>
+                    <Route 
+                        path={this.props.match.path + '/contact-data'} 
+                        component={ContactData}/>
+                </Fragment>
+            )            
+        }
         return(
             <div>
-                <CheckoutSummary ingredients={this.props.ingredients}
-                checkoutContinued={this.checkoutContinued}
-                checkoutCancelled={this.checkoutCancelled}/>
-                <Route 
-                    path={this.props.match.path + '/contact-data'} 
-                   component={ContactData}/>
+                {summary}     
             </div>
         );
     }
@@ -34,8 +47,8 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-
+        ingredients: state.bur.ingredients,
+        purchased: state.ord.purchased
     }
 }
 
