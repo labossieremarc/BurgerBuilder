@@ -26,3 +26,8 @@
 .Danger {
     color: #944317;
 }
+.Delete:first-of-type{
+    color: #944317;
+    padding: 0px 0px 0px 40px;
+    margin: 0px;
+}

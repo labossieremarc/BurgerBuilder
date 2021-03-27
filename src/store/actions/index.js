@@ -11,5 +11,11 @@ export {
 export {
     purchaseBurger,
     purchaseInit,
-    getOrders
+    getOrders,
+    deleteOrder
 } from './order'
+
+
+export {
+    auth
+} from './Auth'

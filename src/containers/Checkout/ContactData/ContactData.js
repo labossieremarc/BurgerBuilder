@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input'
 import {connect} from 'react-redux'
 import * as actionCreator from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+import { inputChangedHandler, formValidHandler} from '../../../components/UI/FormValidation/FormValidation'
 
 class ContactData extends Component{
 
@@ -29,42 +30,24 @@ class ContactData extends Component{
         
 
     }
-    checkIfValid = (value, rules) => {
-        let isValid = true; 
-        if (rules.required){
-            isValid = value.trim() !== '' && isValid;    
-        }
-        if (rules.minLength){
-            isValid = value.length >= rules.minLength && isValid
-        }
-        return isValid;
+    formHandler =(form, event, inputName) =>{
+       const contactForm = inputChangedHandler(form, event, inputName);
+       const validForm = formValidHandler(contactForm)
+       this.props.onUpdateInput(contactForm, validForm)
     }
+    
 
 
 
-    inputChangedHandler = (event, inputId) => {
-        const updatedOrderForm = {...this.props.orderForm};
-        const copyOfForm = {...updatedOrderForm[inputId]}
-        copyOfForm.value = event.target.value;
-        copyOfForm.valid = this.checkIfValid(copyOfForm.value, copyOfForm.validation);
-        copyOfForm.touched = true;
-        updatedOrderForm[inputId] = copyOfForm;
-        let formIsValid= true;
-        Object.entries(updatedOrderForm).map(([key, val]) => {
-            formIsValid = val.valid && formIsValid ? true : false;
-            return null; 
-        })
-        this.props.onUpdateInput(updatedOrderForm, formIsValid)
-    }
 
 
     render(){
         const formElementsArray = Object.entries(this.props.orderForm).map(([key, val]) => {
-        return  <Input 
-                label={key} elementConfig={val.elementConfig} elementType={val.elementType}
-                value={val.value} key={key} valid={!val.valid} 
-                shouldValidate={val.shouldValidate} touched={val.touched}
-                changed={(event) =>this.inputChangedHandler(event, key)}/>})
+            return  <Input 
+                    label={key} elementConfig={val.elementConfig} elementType={val.elementType}
+                    value={val.value} key={key} invalid={!val.valid} 
+                    shouldValidate={val.shouldValidate} touched={val.touched}
+                    changed={(event) =>this.formHandler(this.props.orderForm,event, key)}/>})
             
         return(
             <div className={classes.ContactData}>

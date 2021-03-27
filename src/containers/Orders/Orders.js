@@ -5,21 +5,32 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import { connect } from 'react-redux';
 import * as actionCreator from '../../store/actions/index'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import axios from '../../axios-orders'
 class Orders extends Component{
 
    componentDidMount(){
     this.props.onGetOrders();
-    console.log(this.props.orders)
-   }    
+   } 
+   onDeleteHandler = (id) => {    
+    console.log(id);
+    axios.delete('/orders/' + id +'.json') 
+    .then( response => {       
+       
+    } )
+    
+  };
+     
     render () {
         let orders = <Spinner />;
         if(!this.props.loading ){
             orders = this.props.orders.map(order => (
                 
-                <Order 
+                <Order
                 key={order.id}
+                id={order.id}
                 ingredients={order.ingredients}
-                price={order.price}/>
+                price={order.price}
+                clicked={()=>this.onDeleteHandler(order.id)}/>
             ))
         }
             
@@ -39,7 +50,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetOrders: () => dispatch(actionCreator.getOrders())
+        onGetOrders: () => dispatch(actionCreator.getOrders()),
+        
     }
 }
 

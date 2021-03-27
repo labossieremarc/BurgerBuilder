@@ -11,7 +11,9 @@ const purchaseBurgerSuccess = (state, action) => {
     const newOrder = {
         ...action.orderData,
         id: action.orderId  
+        
     }
+    console.log(newOrder)
     return updateObject(
         state, 
         {loading: false, purchased: true, orders: state.orders.concat(newOrder)})

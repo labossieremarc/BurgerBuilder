@@ -18,9 +18,12 @@ class BurgerBuilder extends Component{
         this.state={
             showCheckOut: false,
         }
+        
     }
     componentDidMount () {
         this.props.onInitIngredients();
+        if(this.props.ingredients)
+            this.props.onLoadPrice();
     }
     showCheckOutHandler = () => {
         this.setState({showCheckOut: !this.state.showCheckOut})
@@ -46,7 +49,7 @@ class BurgerBuilder extends Component{
         let orderSummary =null;
         let burger= !this.props.error ? <p>Ingredients cant be loaded</p> : <Spinner/>;
         if (this.props.ingredients){
-        this.props.onLoadPrice();
+       
         burger =(
             <Fragment>
                 <Burger ingredients={this.props.ingredients}/>

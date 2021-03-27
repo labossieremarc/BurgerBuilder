@@ -33,7 +33,13 @@ const removeIngredient = (state, action) => {
       return updateObject(state, {ingredients: removedIngredients})
 }
 const loadIngredients = (state, action) => {
-  
+  return updateObject(state, {
+    ingredients: {
+      salad: action.ingredients.salad,
+      bacon: action.ingredients.bacon,
+      cheese: action.ingredients.cheese,
+      meat:  action.ingredients.meat
+    }, error: false})
 }
 
 
@@ -50,13 +56,7 @@ const reducer = (state = initialState, action) => {
   case actionType.LOAD_PRICE:
       return loadPrice(state) 
   case actionType.LOAD_INGREDIENT:
-      return updateObject(state, {
-              ingredients: {
-                salad: action.ingredients.salad,
-                bacon: action.ingredients.bacon,
-                cheese: action.ingredients.cheese,
-                meat:  action.ingredients.meat
-              }, error: false})
+    return loadIngredients(state, action)
   case actionType.LOAD_INGREDIENTS_FAILED:
       return updateObject(state, {error: true})
   default:

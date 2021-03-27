@@ -103,6 +103,7 @@ const reducer = (state = initialState, action) => {
         case actionType.INPUT_CHANGE:
             return updateObject(state, {orderForm: action.update,
                              buttonDisable: action.disableButton })
+
         default:
             return state;
     }

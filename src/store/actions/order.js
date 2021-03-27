@@ -40,17 +40,32 @@ const getOrdersStart = () => {
     return { type: actionTypes.GET_ORDERS_START}
 }
 export const getOrders = () => {
-    console.log('hello')
     return dispatch => {
         dispatch(getOrdersStart())
         axios.get('/orders.json')
         .then(res => { 
-            let gotOrders = [];
-            gotOrders = Object.values(res.data)
+            let gotOrders = [];       
+            for (const [key, val] of Object.entries(res.data)){
+                let order = {...val, id: key}
+                gotOrders.push(order)
+            }
             dispatch(getOrdersSuccess( gotOrders)); 
         })
         .catch(err => {
             dispatch(ordersFail(err))
         });
+    }
+}
+
+export const deleteOrder =(id) => {
+
+    return dispatch => {
+        axios.delete('./orders/' + id + '.json')
+        .then(response => {
+            
+        })
+        .catch(error  => {
+            dispatch(ordersFail(error))
+        })
     }
 }

@@ -1,20 +1,44 @@
 import classes from './Order.module.css'
-import React from 'react';
+import React, { Component, Fragment } from 'react';
+import Button from '../UI/Button/Button';
+import { connect } from 'react-redux';
+import * as actionCreator from '../../store/actions/index';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+import axios from '../../axios-orders'
 
 
-const order = (props) => {
-
-    const ingredients = Object.entries(props.ingredients).map(([key, val])=>{
-        return <span className={classes.Span} key={key}>{key} : ({val}) </span>
-    });
-
+class Order extends Component{
+    
+    
+    render(){
+        
+        const ingredients = Object.entries(this.props.ingredients).map(([key, val])=>{
+            return (
+            <Fragment>
+            <span className={classes.Span} key={key}>{key} : ({val})  </span>
+            
+            </Fragment>)
+        });
+    
     return(
     <div className={classes.Order}>
         
         
         Ingredients: {ingredients}
-        <p>Price: <strong> {props.price.toFixed(2)} $</strong></p>
+        <p className={classes.Para}>Price: <strong> {this.props.price.toFixed(2)} $</strong>
+        <Button btnType='Delete'  clicked={this.props.clicked}>Delete</Button>  </p>
     </div>
     )};
+    }
 
-export default order;
+const mapDispatchToProps = dispatch => {
+        return {
+           
+           
+        }
+    }
+    
+
+
+
+export default connect(null, mapDispatchToProps)(Order, axios);

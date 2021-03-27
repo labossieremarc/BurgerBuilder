@@ -6,7 +6,7 @@ const input = (props) => {
     let inputElement =null;
     let validationError = null;
     const inputClasses = [classes.InputElement]
-    if (props.valid && props.shouldValidate && props.touched){
+    if (props.invalid && props.shouldValidate && props.touched){
         inputClasses.push(classes.Invalid)
         validationError = <p className={classes.DisplayError}>Please enter a valid {props.label}</p>
     }
