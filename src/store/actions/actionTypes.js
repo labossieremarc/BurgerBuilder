@@ -19,9 +19,11 @@ export const PURCHASE_INIT =  'PURCHASE_INIT';
 export const ORDER_FAIL = 'ORDER_FAIL';
 export const GET_ORDERS_START = 'GET_ORDER_START';
 export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';
+export const DELETE_ORDERS = "DELETE_ORDERS";
 
 //Auth Actions
 
 export const AUTH_START = 'AUTH_START'
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_FAIL = 'AUTH_FAIL'
+export const AUTH_LOGOUT = 'AUTH_LOGOUT'

@@ -9,13 +9,16 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import burgerReducer from './store/Reducers/BurgerBuilder';
 import contactReducer from './store/Reducers/contactData';
 import orderReducer from './store/Reducers/order'
+import authReducer from './store/Reducers/Auth'
 import thunk from 'redux-thunk'
+
 const rootReducer = combineReducers({
   bur: burgerReducer,
   con: contactReducer,
-  ord: orderReducer});
+  ord: orderReducer,
+  auth: authReducer});
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 

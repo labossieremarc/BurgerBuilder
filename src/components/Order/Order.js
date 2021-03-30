@@ -1,9 +1,8 @@
 import classes from './Order.module.css'
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Button from '../UI/Button/Button';
 import { connect } from 'react-redux';
-import * as actionCreator from '../../store/actions/index';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+
 import axios from '../../axios-orders'
 
 
@@ -14,10 +13,10 @@ class Order extends Component{
         
         const ingredients = Object.entries(this.props.ingredients).map(([key, val])=>{
             return (
-            <Fragment>
+            
             <span className={classes.Span} key={key}>{key} : ({val})  </span>
             
-            </Fragment>)
+            )
         });
     
     return(

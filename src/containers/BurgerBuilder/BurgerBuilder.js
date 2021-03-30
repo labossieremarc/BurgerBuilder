@@ -25,6 +25,10 @@ class BurgerBuilder extends Component{
         if(this.props.ingredients)
             this.props.onLoadPrice();
     }
+    componentDidUpdate(){
+        if(this.props.ingredients)
+            this.props.onLoadPrice();
+    }
     showCheckOutHandler = () => {
         this.setState({showCheckOut: !this.state.showCheckOut})
     }
@@ -33,8 +37,8 @@ class BurgerBuilder extends Component{
         this.props.history.push({pathname: '/checkout'})
     }
     disableOrderHandler = () => {
-        const disabledInfo ={ ...this.props.ingredients };
-        return Object.values(disabledInfo).some((val) => val > 0)  
+        const hasIngredients = Object.values({...this.props.ingredients}).some((val) => val > 0);
+        return  hasIngredients && this.props.isLoggedin ? true : false
     }
     disableIngredientsHandler = () => {
         const disabledInfo ={...this.props.ingredients}; 
@@ -47,7 +51,7 @@ class BurgerBuilder extends Component{
     render( ) {
             
         let orderSummary =null;
-        let burger= !this.props.error ? <p>Ingredients cant be loaded</p> : <Spinner/>;
+        let burger= !this.props.error ? <p></p> : <Spinner/>;
         if (this.props.ingredients){
        
         burger =(
@@ -57,6 +61,7 @@ class BurgerBuilder extends Component{
                     price={this.props.totalPrice}
                     ingredientAdded={this.props.onAddIngredient}
                     ingredientRemoved={this.props.onRemIngredient}
+                    isLoggedIn = {this.props.isLoggedin}
                     disabled={this.disableIngredientsHandler()}
                     order={this.disableOrderHandler()}
                     showCheckout={this.showCheckOutHandler}/>
@@ -83,7 +88,8 @@ const mapStateToProps = state => {
     return {
         ingredients: state.bur.ingredients,
         totalPrice: state.bur.totalPrice,
-        error: state.bur.error
+        error: state.bur.error,
+        isLoggedin: state.auth.token !== null
     }
 }
 

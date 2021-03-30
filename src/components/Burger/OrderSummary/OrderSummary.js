@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import classes from './OrderSummary.module.css';
 import Button from '../../UI/Button/Button';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+
 
 class OrderSummary extends Component {
     render ( ) {

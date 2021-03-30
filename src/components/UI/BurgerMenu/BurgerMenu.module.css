@@ -18,3 +18,8 @@
     margin: 3px;
 }
 
+@media (min-width: 500px) {
+    .BurgerMenu {
+        display: none;
+    }
+}

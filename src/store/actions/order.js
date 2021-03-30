@@ -19,10 +19,10 @@ export const purchaseInit = () => {
     return {type: actionTypes.PURCHASE_INIT } }
 
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(getOrdersStart());
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData)
         .then(response=> {
             dispatch(purchaseBurgerSuccess(response.data.name, orderData))   
         })
@@ -39,10 +39,11 @@ const getOrdersSuccess = (orders) => {
 const getOrdersStart = () => {
     return { type: actionTypes.GET_ORDERS_START}
 }
-export const getOrders = () => {
+export const getOrders = (token, userId) => {
     return dispatch => {
         dispatch(getOrdersStart())
-        axios.get('/orders.json')
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId +'"';
+        axios.get('/orders.json' + queryParams)
         .then(res => { 
             let gotOrders = [];       
             for (const [key, val] of Object.entries(res.data)){
@@ -56,12 +57,18 @@ export const getOrders = () => {
         });
     }
 }
-
-export const deleteOrder =(id) => {
-
+const deleteSuccess = () => {
+    return {
+        type: actionTypes.DELETE_ORDERS, 
+    } }
+export const deleteOrder =(token, id, userId) => {
+        
     return dispatch => {
-        axios.delete('./orders/' + id + '.json')
+        dispatch(getOrdersStart())
+        axios.delete('./orders/' + id + '.json?auth='+ token)
         .then(response => {
+            dispatch(deleteSuccess())
+            dispatch(getOrders(token, userId))
             
         })
         .catch(error  => {

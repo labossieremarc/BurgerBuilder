@@ -12,7 +12,7 @@ import { inputChangedHandler, formValidHandler} from '../../../components/UI/For
 class ContactData extends Component{
 
     componentDidMount(){
-        console.log(this.props.totalPrice)
+        
     }
 
     orderHandler = (event) => {
@@ -24,9 +24,10 @@ class ContactData extends Component{
         const order = { 
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            orderData: formData   
+            orderData: formData,
+            userId: this.props.userId   
         }
-        this.props.onOrderBurger(order)
+        this.props.onOrderBurger(order, this.props.token)
         
 
     }
@@ -73,13 +74,15 @@ const mapStateToProps = state => {
         totalPrice: state.bur.totalPrice,
         orderForm: state.con.orderForm,
         buttonDisable: state.con.buttonDisable,
-        loading: state.ord.loading
+        loading: state.ord.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         onUpdateInput: (update, disableButton) => dispatch(actionCreator.updateInput(update, disableButton)),
-        onOrderBurger: (orderData) => dispatch(actionCreator.purchaseBurger(orderData))
+        onOrderBurger: (orderData, token) => dispatch(actionCreator.purchaseBurger(orderData, token))
     }
 }
 

@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
     orders: [],
@@ -13,7 +13,7 @@ const purchaseBurgerSuccess = (state, action) => {
         id: action.orderId  
         
     }
-    console.log(newOrder)
+    
     return updateObject(
         state, 
         {loading: false, purchased: true, orders: state.orders.concat(newOrder)})
@@ -33,6 +33,8 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {loading: true})
         case actionTypes.GET_ORDERS_SUCCESS:
             return updateObject(state, { orders: action.orders, loading: false})
+        case actionTypes.DELETE_ORDERS:
+            return updateObject(state, {orders: [], loading: false})
         default:
             return state;
     }

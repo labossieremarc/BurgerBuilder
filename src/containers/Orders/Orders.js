@@ -5,24 +5,24 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import { connect } from 'react-redux';
 import * as actionCreator from '../../store/actions/index'
 import Spinner from '../../components/UI/Spinner/Spinner'
-import axios from '../../axios-orders'
+
 class Orders extends Component{
 
    componentDidMount(){
-    this.props.onGetOrders();
+    this.props.onGetOrders(this.props.token, this.props.userId);
    } 
-   onDeleteHandler = (id) => {    
-    console.log(id);
-    axios.delete('/orders/' + id +'.json') 
-    .then( response => {       
-       
-    } )
+   onDeleteOrderHandler =(id) => {
+    this.props.onDeleteOrder(this.props.token, id, this.props.userId)
     
-  };
+   }
+
+
      
     render () {
         let orders = <Spinner />;
         if(!this.props.loading ){
+            orders=<p>No Burgers made to order </p>;
+            if(this.props.orders)
             orders = this.props.orders.map(order => (
                 
                 <Order
@@ -30,7 +30,7 @@ class Orders extends Component{
                 id={order.id}
                 ingredients={order.ingredients}
                 price={order.price}
-                clicked={()=>this.onDeleteHandler(order.id)}/>
+                clicked={()=>this.onDeleteOrderHandler(order.id)}/>
             ))
         }
             
@@ -44,13 +44,16 @@ class Orders extends Component{
 const mapStateToProps = state => {
     return {
         loading: state.ord.loading,
-        orders: state.ord.orders
+        orders: state.ord.orders,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetOrders: () => dispatch(actionCreator.getOrders()),
+        onGetOrders: (token, userId) => dispatch(actionCreator.getOrders(token, userId)),
+        onDeleteOrder: (token, id, userId) => dispatch(actionCreator.deleteOrder(token, id, userId))
         
     }
 }
